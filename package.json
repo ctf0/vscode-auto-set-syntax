@@ -2,7 +2,7 @@
     "name": "auto-set-syntax",
     "displayName": "Auto Set Syntax",
     "description": "Auto Set file languageId/syntax based on first line content",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "ctf0",
     "license": "MIT",
     "engines": {

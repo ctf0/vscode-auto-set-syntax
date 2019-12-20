@@ -1,8 +1,8 @@
-import {ExtensionContext, workspace, languages} from 'vscode'
+import { workspace, languages } from 'vscode'
 const escapeStringRegexp = require('escape-string-regexp')
 
-export function activate(context: ExtensionContext) {
-    context.subscriptions.push(workspace.onDidSaveTextDocument((doc: any) => applySyntax(doc)))
+export function activate() {
+    workspace.onDidSaveTextDocument((doc: any) => applySyntax(doc))
 }
 
 function getConfig() {
