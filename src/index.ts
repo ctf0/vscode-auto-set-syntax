@@ -1,4 +1,4 @@
-import { workspace, languages } from 'vscode'
+import { window, workspace, languages } from 'vscode'
 const escapeStringRegexp = require('escape-string-regexp')
 let config: any
 
@@ -11,7 +11,11 @@ export function activate() {
         }
     })
 
-    workspace.onDidSaveTextDocument((doc: any) => applySyntax(doc))
+    workspace.onDidSaveTextDocument((doc: any) => {
+        if (doc == window.activeTextEditor.document) {
+            applySyntax(doc)
+        }
+    })
 }
 
 function readConfig() {
