@@ -12,7 +12,9 @@ export function activate() {
     })
 
     workspace.onDidSaveTextDocument((doc: any) => {
-        if (doc == window.activeTextEditor.document) {
+        let editor = window.activeTextEditor
+
+        if (editor && doc == editor.document) {
             applySyntax(doc)
         }
     })
