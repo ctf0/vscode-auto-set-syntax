@@ -1,47 +1,38 @@
-import { window, workspace, languages } from 'vscode'
-const escapeStringRegexp = require('escape-string-regexp')
-let config: any
+import { window, workspace, languages, ExtensionContext } from 'vscode'
+import OnTypeProvider from "./format_provider"
+import * as utils from "./utils"
 
-export function activate() {
-    readConfig()
+const { EOL } = require('os')
+
+export function activate(context: ExtensionContext) {
+    utils.readConfig()
 
     workspace.onDidChangeConfiguration((e: any) => {
-        if (e.affectsConfiguration) {
-            readConfig()
+        if (e.affectsConfiguration('auto_set_syntax')) {
+            utils.readConfig()
         }
     })
 
+    // type
+    context.subscriptions.push(
+        languages.registerOnTypeFormattingEditProvider(
+            [
+                { scheme: 'file' },
+                { scheme: 'untitled' }
+            ],
+            new OnTypeProvider(),
+            EOL
+        )
+    )
+
+    // save
     workspace.onDidSaveTextDocument((doc: any) => {
         let editor = window.activeTextEditor
 
         if (editor && doc == editor.document) {
-            applySyntax(doc)
+            utils.applySyntax(doc)
         }
     })
 }
 
-function readConfig() {
-    return config = workspace.getConfiguration('auto_set_syntax')
-}
-
-function applySyntax(doc: any) {
-    let fLine = doc.lineAt(0)
-
-    if (!fLine.isEmptyOrWhitespace) {
-        let txt = fLine.text
-        let mapping = config.syntax_mapping
-        let find = mapping.find((obj: any) => txt.match(escapeStringRegexp(obj.first_line_pattern)))
-
-        if (find) {
-            let syntax = find.languageId
-
-            if (!languages.match(syntax, doc)) {
-                return languages.setTextDocumentLanguage(doc, syntax)
-            }
-        }
-    }
-}
-
-export function deactivate() {
-    //
-}
+export function deactivate() { }

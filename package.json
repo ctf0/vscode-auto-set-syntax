@@ -2,7 +2,7 @@
     "name": "auto-set-syntax",
     "displayName": "Auto Set Syntax",
     "description": "Auto Set file languageId/syntax based on first line content",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "ctf0",
     "license": "MIT",
     "engines": {
@@ -44,6 +44,11 @@
                         }
                     },
                     "description": "first line pattern & its corresponding languageId/syntax"
+                },
+                "auto_set_syntax.onType": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "set syntax on type instead of on save"
                 }
             }
         }

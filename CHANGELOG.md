@@ -11,3 +11,7 @@
 ## 0.0.3
 
 - small corrections
+
+## 0.0.5
+
+- add option to set syntax `onType` instead of on save
