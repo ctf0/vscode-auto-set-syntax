@@ -1,15 +1,20 @@
-import { window, workspace, languages, ExtensionContext } from 'vscode'
-import OnTypeProvider from "./format_provider"
-import * as utils from "./utils"
+import {
+    ExtensionContext,
+    languages,
+    window,
+    workspace
+} from 'vscode'
+import OnTypeProvider from './format_provider'
+import * as utils     from './utils'
 
-const { EOL } = require('os')
+const {EOL} = require('os')
 
-export function activate(context: ExtensionContext) {
-    utils.readConfig()
+export async function activate(context: ExtensionContext) {
+    await utils.readConfig()
 
-    workspace.onDidChangeConfiguration((e: any) => {
-        if (e.affectsConfiguration('auto_set_syntax')) {
-            utils.readConfig()
+    workspace.onDidChangeConfiguration(async (e: any) => {
+        if (e.affectsConfiguration(utils.PACKAGE_NAME)) {
+            await utils.readConfig()
         }
     })
 
@@ -17,8 +22,8 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(
         languages.registerOnTypeFormattingEditProvider(
             [
-                { scheme: 'file' },
-                { scheme: 'untitled' }
+                {scheme: 'file'},
+                {scheme: 'untitled'}
             ],
             new OnTypeProvider(),
             EOL
@@ -29,7 +34,7 @@ export function activate(context: ExtensionContext) {
     workspace.onDidSaveTextDocument((doc: any) => {
         let editor = window.activeTextEditor
 
-        if (editor && doc == editor.document) {
+        if (editor && doc == editor.document && !utils.config.onType) {
             utils.applySyntax(doc)
         }
     })

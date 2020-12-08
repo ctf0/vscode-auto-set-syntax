@@ -1,14 +1,11 @@
-import { workspace, languages } from 'vscode'
+import {languages, workspace} from 'vscode'
 
 const escapeStringRegexp = require('escape-string-regexp')
-let config: any
+export const PACKAGE_NAME = 'autoSetSyntax'
+export let config: any
 
 export async function readConfig() {
-    return config = workspace.getConfiguration('auto_set_syntax')
-}
-
-export function getConfig() {
-    return config
+    config = await workspace.getConfiguration(PACKAGE_NAME)
 }
 
 export async function applySyntax(doc: any) {
@@ -16,7 +13,7 @@ export async function applySyntax(doc: any) {
 
     if (!fLine.isEmptyOrWhitespace) {
         let txt = fLine.text
-        let mapping = getConfig().syntax_mapping
+        let mapping = config.syntaxMapping
         let find = mapping.find((obj: any) => txt.match(escapeStringRegexp(obj.first_line_pattern)))
 
         if (find) {

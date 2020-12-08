@@ -1,16 +1,22 @@
-import { OnTypeFormattingEditProvider, TextDocument, workspace, TextEdit, Position } from 'vscode'
-import * as utils from "./utils"
+import {
+    OnTypeFormattingEditProvider,
+    Position,
+    TextDocument,
+    TextEdit,
+    workspace
+} from 'vscode'
+import * as utils from './utils'
 
 export default class OnTypeProvider implements OnTypeFormattingEditProvider {
 
     config: any
 
     constructor() {
-        this.config = utils.getConfig()
+        this.config = utils.config
 
         workspace.onDidChangeConfiguration((e) => {
-            if (e.affectsConfiguration('auto_set_syntax')) {
-                this.config = utils.getConfig()
+            if (e.affectsConfiguration(utils.PACKAGE_NAME)) {
+                this.config = utils.config
             }
         })
     }

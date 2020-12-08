@@ -10,3 +10,7 @@ auto set syntax based on first line content, similar to https://github.com/jfche
 ## Notes
 
 - for syntax check https://code.visualstudio.com/docs/languages/identifiers
+
+## TODO
+
+- [ ] get it to work on paste as well.
